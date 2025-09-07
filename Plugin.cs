@@ -19,10 +19,6 @@ namespace SilkSong_CustomLang
     [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
     public class Plugin : BaseUnityPlugin
     {
-        public const string PluginGuid = "com.yourname.languageeditor";
-        public const string PluginName = "Language Editor";
-        public const string PluginVersion = "1.0.0";
-
         internal static ManualLogSource logger;
         internal static ConfigEntry<KeyboardShortcut> DumpKey;
         internal static ConfigEntry<KeyboardShortcut> ReloadKey;
@@ -342,6 +338,13 @@ namespace SilkSong_CustomLang
             {
                 Plugin.logger.LogError($"Error in IWillFuckingManualChangeTheLanguage: {e}");
             }
+        }
+        [HarmonyPatch(typeof(UIManager), "LoadGameSettings")]
+        [HarmonyPostfix]
+        public static void ReloadingTheLanguage()
+        {
+            // 刷新本地化
+            IWillFuckingManualChangeTheLanguage();
         }
     }
 }
